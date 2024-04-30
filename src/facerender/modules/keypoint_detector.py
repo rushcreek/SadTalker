@@ -47,7 +47,7 @@ class KPDetector(nn.Module):
         """
         shape = heatmap.shape
         heatmap = heatmap.unsqueeze(-1)
-        grid = make_coordinate_grid(shape[2:], heatmap.type()).unsqueeze_(0).unsqueeze_(0)
+        grid = make_coordinate_grid(shape[2:], heatmap.type()).to(heatmap.device).unsqueeze_(0).unsqueeze_(0)
         value = (heatmap * grid).sum(dim=(2, 3, 4))
         kp = {'value': value}
 
@@ -176,4 +176,3 @@ class HEEstimator(nn.Module):
         exp = self.fc_exp(out)
 
         return {'yaw': yaw, 'pitch': pitch, 'roll': roll, 't': t, 'exp': exp}
-
